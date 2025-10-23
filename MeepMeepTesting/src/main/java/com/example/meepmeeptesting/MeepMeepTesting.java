@@ -17,11 +17,23 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 
-                mm.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_OFFICIAL)
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(0, 0, 0))
+                .lineToX(30)
+                .turn(Math.toRadians(90))
+                .lineToY(30)
+                .turn(Math.toRadians(90))
+                .lineToX(0)
+                .turn(Math.toRadians(90))
+                .lineToY(0)
+                .turn(Math.toRadians(90))
+                .build());
+
+                mm.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)
                 .setTheme(new ColorSchemeRedDark())
                 .setBackgroundAlpha(1f)
                 .addEntity(myBot)
                 .start();
+
 
     }
 }
