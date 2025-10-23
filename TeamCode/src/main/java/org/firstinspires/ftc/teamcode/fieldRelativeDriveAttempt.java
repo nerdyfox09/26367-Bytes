@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -54,6 +55,7 @@ import org.firstinspires.ftc.teamcode.messages.PoseMessage;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  *
  */
+@Disabled
 @TeleOp(name = "Field Relative Mecanum Drive")
 public class fieldRelativeDriveAttempt extends OpMode {
 
@@ -111,7 +113,7 @@ public class fieldRelativeDriveAttempt extends OpMode {
         telemetry.addData("Drive Mode: ", driveMode);
         telemetry.update();
 
-        localizer = new ThreeDeadWheelLocalizer(hardwareMap, IN_PER_TICK, new Pose2d(0,0,0));
+     //   localizer = new ThreeDeadWheelLocalizer(hardwareMap, IN_PER_TICK, new Pose2d(0,0,0));
     }
 
     @Override
