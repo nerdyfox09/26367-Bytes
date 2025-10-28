@@ -25,9 +25,10 @@ public class DriverControlled extends LinearOpMode {
         Servo transferServo = hardwareMap.get(Servo.class, "transferServo");
 
         // Reverse directions of motors
-        backRight.setDirection(DcMotorEx.Direction.REVERSE);
+        //backRight.setDirection(DcMotorEx.Direction.REVERSE);
         intakeMotor.setDirection(DcMotorEx.Direction.REVERSE);
         rightOuttakeMotor.setDirection(DcMotorEx.Direction.REVERSE);
+       // frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Set run modes
         frontLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
@@ -36,6 +37,9 @@ public class DriverControlled extends LinearOpMode {
         backRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         leftOuttakeMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         rightOuttakeMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
+        leftOuttakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightOuttakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Initialize servo position
         transferServo.setPosition(0.0); // starting position (flap down)
