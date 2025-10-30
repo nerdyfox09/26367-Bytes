@@ -32,6 +32,7 @@ import com.acmerobotics.roadrunner.ftc.PositionVelocityPair;
 import com.acmerobotics.roadrunner.ftc.RawEncoder;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -50,7 +51,7 @@ import java.lang.Math;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
+@Disabled
 @Config
 public final class MecanumDrive {
     public static class Params {
@@ -64,12 +65,12 @@ public final class MecanumDrive {
 
         // drive model parameters
         public double inPerTick = 0.00198432166862;
-        public double lateralInPerTick = 0.0015620675396985707;
-        public double trackWidthTicks = 7836.863704223328;
+        public double lateralInPerTick = 0.001492295191183421;
+        public double trackWidthTicks = 7182.769805858175;
 
         // feedforward parameters (in tick units)
-        public double kS = 0.6540437191717707;
-        public double kV = 0.0003772559035120466;
+        public double kS = 0.8900557107069424;
+        public double kV = 0.0003752091615679999;
         public double kA = 0.0001;
 
         // path profile parameters (in inches)
@@ -82,9 +83,9 @@ public final class MecanumDrive {
         public double maxAngAccel = Math.PI;
 
         // path controller gains
-        public double axialGain = 12.0;
-        public double lateralGain = 4.0;
-        public double headingGain = 10.0; // shared with turn
+        public double axialGain = 14.0;
+        public double lateralGain = 10.0;
+        public double headingGain = 11.0; // shared with turn
 
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;
@@ -139,6 +140,7 @@ public final class MecanumDrive {
 
             // TODO: reverse encoders if needed
             //   leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
             this.pose = pose;
         }
@@ -238,6 +240,7 @@ public final class MecanumDrive {
         // TODO: reverse motor directions if needed
          // leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
          // leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         // TODO: make sure your config has an IMU with this name (can be BNO or BHI)
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html

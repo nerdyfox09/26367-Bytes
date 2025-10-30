@@ -47,7 +47,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * If the servo is incrementing too far, or not far enough. You can adjust the rate by pressing
  * D-pad up, or d-pad down.
  */
-
+@Disabled
 @TeleOp(name="Servo Position Helper", group="Concept")
 public class ServoPositionHelper extends LinearOpMode {
 

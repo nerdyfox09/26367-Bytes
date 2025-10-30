@@ -55,7 +55,7 @@ import org.firstinspires.ftc.teamcode.messages.PoseMessage;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  *
  */
-@Disabled
+
 @TeleOp(name = "Field Relative Mecanum Drive")
 public class fieldRelativeDriveAttempt extends OpMode {
 
@@ -168,11 +168,11 @@ public class fieldRelativeDriveAttempt extends OpMode {
 
         // Outtake (flywheel) control
         if (gamepad1.dpad_up) { //sets power for the far position
-            leftOuttakeMotor.setPower(1.0);
-            rightOuttakeMotor.setPower(1.0);
+            leftOuttakeMotor.setPower(1);
+            rightOuttakeMotor.setPower(1);
         } else if (gamepad1.dpad_down) { //stops the motors
-            leftOuttakeMotor.setPower(0.0);
-            rightOuttakeMotor.setPower(0.0);
+            leftOuttakeMotor.setPower(0);
+            rightOuttakeMotor.setPower(0);
         } else if (gamepad1.dpad_right) { //sets motor power for the close position
             leftOuttakeMotor.setPower(0.5); //tune based on how powerful motor is
             rightOuttakeMotor.setPower(0.5); //tune based on how powerful motor is

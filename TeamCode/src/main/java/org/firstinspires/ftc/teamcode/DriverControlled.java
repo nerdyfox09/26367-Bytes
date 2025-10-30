@@ -73,8 +73,8 @@ public class DriverControlled extends LinearOpMode {
                 leftOuttakeMotor.setPower(1.0);
                 rightOuttakeMotor.setPower(1.0);
             } else if (gamepad1.b) { //stops the motors
-                leftOuttakeMotor.setPower(0.0);
-                rightOuttakeMotor.setPower(0.0);
+                leftOuttakeMotor.setPower(0);
+                rightOuttakeMotor.setPower(0);
             } else if (gamepad1.y) { //sets motor power for the close position
                 leftOuttakeMotor.setPower(0.5); //tune based on how powerful motor is
                 rightOuttakeMotor.setPower(0.5); //tune based on how powerful motor is
