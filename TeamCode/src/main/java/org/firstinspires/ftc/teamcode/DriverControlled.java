@@ -35,8 +35,9 @@ public class DriverControlled extends LinearOpMode {
         frontRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         backLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         backRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        leftOuttakeMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        rightOuttakeMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
+        leftOuttakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        rightOuttakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         leftOuttakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightOuttakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

@@ -101,9 +101,20 @@ public class fieldRelativeDriveAttempt extends OpMode {
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        leftOuttakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightOuttakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // set run modes
+        frontLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        frontRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        backLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        backRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
+        leftOuttakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        rightOuttakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
-        backRight.setDirection(DcMotorEx.Direction.REVERSE);
         intakeMotor.setDirection(DcMotorEx.Direction.REVERSE);
         rightOuttakeMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
@@ -143,14 +154,14 @@ public class fieldRelativeDriveAttempt extends OpMode {
         // Intake controls
         double intake = gamepad1.left_trigger;
         if (intake > 0) {
-            intakeMotor.setPower(1);
+            intakeMotor.setPower(-1);
         } else {
             intakeMotor.setPower(0);
         }
 
         double outtake = gamepad1.right_trigger;
         if (outtake > 0) {
-            intakeMotor.setPower(-1);
+            intakeMotor.setPower(1);
         } else {
             intakeMotor.setPower(0);
         }
