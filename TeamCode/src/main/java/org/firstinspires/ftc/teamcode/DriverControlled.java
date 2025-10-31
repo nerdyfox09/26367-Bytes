@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "Driver Controlled")
 public class DriverControlled extends LinearOpMode {
@@ -22,13 +21,10 @@ public class DriverControlled extends LinearOpMode {
         // Initialize outtake motors and servo
         DcMotorEx leftOuttakeMotor = hardwareMap.get(DcMotorEx.class, "leftOuttakeMotor");
         DcMotorEx rightOuttakeMotor = hardwareMap.get(DcMotorEx.class, "rightOuttakeMotor");
-        Servo transferServo = hardwareMap.get(Servo.class, "transferServo");
 
         // Reverse directions of motors
-        //backRight.setDirection(DcMotorEx.Direction.REVERSE);
         intakeMotor.setDirection(DcMotorEx.Direction.REVERSE);
         rightOuttakeMotor.setDirection(DcMotorEx.Direction.REVERSE);
-       // frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Set run modes
         frontLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
@@ -42,8 +38,6 @@ public class DriverControlled extends LinearOpMode {
         leftOuttakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightOuttakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        // Initialize servo position
-        transferServo.setPosition(0.0); // starting position (flap down)
 
         waitForStart();
 
@@ -80,13 +74,6 @@ public class DriverControlled extends LinearOpMode {
                 rightOuttakeMotor.setPower(0.5); //tune based on how powerful motor is
             }
 
-            // Transfer servo control (brief push)
-            if (gamepad1.x) {
-                transferServo.setPosition(1.0); // push up
-                sleep(500); // wait half a second
-                transferServo.setPosition(0.0); // return down
-            }
-
             // ----- Calculate drive power -----
             double frontLeftPower = drive + strafe + rotate;
             double frontRightPower = drive - strafe - rotate;
@@ -113,7 +100,6 @@ public class DriverControlled extends LinearOpMode {
             backRight.setPower(backRightPower);
 
             telemetry.addData("Outtake Power (L/R)", "%4.2f / %4.2f", leftOuttakeMotor.getPower(), rightOuttakeMotor.getPower());
-            telemetry.addData("Transfer Servo Position", transferServo.getPosition());
             telemetry.addData("Drive", drive);
             telemetry.addData("Strafe", strafe);
             telemetry.addData("Rotate", rotate);

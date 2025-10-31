@@ -31,15 +31,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.messages.PoseMessage;
+import java.lang.Math;
 
 /*
  * This OpMode illustrates how to program your robot to drive field relative.  This means
@@ -55,84 +53,34 @@ import org.firstinspires.ftc.teamcode.messages.PoseMessage;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  *
  */
-
 @TeleOp(name = "Field Relative Mecanum Drive")
 public class fieldRelativeDriveAttempt extends OpMode {
 
-    // This declares the four motors needed
-    DcMotor frontLeft;
-    DcMotor frontRight;
-    DcMotor backLeft;
-    DcMotor backRight;
-    DcMotorEx intakeMotor;
-
-    // Declare outtake motors and servo
-    DcMotorEx leftOuttakeMotor ;
-    DcMotorEx rightOuttakeMotor;
-    Servo transferServo;
-
-    private ThreeDeadWheelLocalizer localizer;
-    public enum DRIVE_MODE {
-        ROBOT_RELATIVE,
-        FIELD_RELATIVE;
-    }
-    private DRIVE_MODE driveMode = DRIVE_MODE.FIELD_RELATIVE;
-
-    // This declares the IMU needed to get the current direction the robot is facing
-    //IMU imu;
+    Bytes_Robot myRobot;
 
     @Override
     public void init() {
-        // Initialize drive motors
-        DcMotorEx frontLeft = hardwareMap.get(DcMotorEx.class, BYTES_CONFIG.HARDWARE.DRIVETRAIN.MOTORS.FRONT_LEFT);
-        DcMotorEx frontRight = hardwareMap.get(DcMotorEx.class, BYTES_CONFIG.HARDWARE.DRIVETRAIN.MOTORS.FRONT_RIGHT);
-        DcMotorEx backLeft = hardwareMap.get(DcMotorEx.class, BYTES_CONFIG.HARDWARE.DRIVETRAIN.MOTORS.BACK_LEFT);
-        DcMotorEx backRight = hardwareMap.get(DcMotorEx.class, BYTES_CONFIG.HARDWARE.DRIVETRAIN.MOTORS.BACK_RIGHT);
-        DcMotorEx intakeMotor = hardwareMap.get(DcMotorEx.class, BYTES_CONFIG.HARDWARE.INTAKE.MOTORS.PRIMARY);
+        // initialize myRobot
+        myRobot = new Bytes_Robot(hardwareMap);
 
-        // Initialize outtake motors and servo
-        DcMotorEx leftOuttakeMotor = hardwareMap.get(DcMotorEx.class, BYTES_CONFIG.HARDWARE.OUTTAKE.MOTORS.LEFT);
-        DcMotorEx rightOuttakeMotor = hardwareMap.get(DcMotorEx.class, BYTES_CONFIG.HARDWARE.OUTTAKE.MOTORS.RIGHT);
-        Servo transferServo = hardwareMap.get(Servo.class, BYTES_CONFIG.HARDWARE.TRANSFER.SERVOS.PRIMARY);
-
-        // set brake mode on for firm stopping behavior
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        leftOuttakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightOuttakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        // set run modes
-        frontLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        frontRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        backLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        backRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-
-        leftOuttakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        rightOuttakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-
-        // We set the left motors in reverse which is needed for drive trains where the left
-        // motors are opposite to the right ones.
-        intakeMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        rightOuttakeMotor.setDirection(DcMotorEx.Direction.REVERSE);
-
-        // TODO: get pose stored from AutonomousOp. for now initialize to 0,0,0
-        Pose2d initTelePose = new Pose2d(0,0,0);
+        // Pull initial pose from GlobalStorage. If no AutoOp has set the pose, it will
+        // default to 0,0,0
+        Pose2d initTelePose = BYTES_GLOBAL_Storage.currentPose;
         telemetry.addData("Initial TeleOp Pose: ", initTelePose);
-        telemetry.addData("Drive Mode: ", driveMode);
+        telemetry.addData("Drive Mode: ", myRobot.driveMode);
         telemetry.update();
 
-     //   localizer = new ThreeDeadWheelLocalizer(hardwareMap, IN_PER_TICK, new Pose2d(0,0,0));
+        myRobot.localizer = new ThreeDeadWheelLocalizer(
+                hardwareMap,
+                BYTES_CONFIG.PARAMS.DRIVETRAIN.inPerTick,
+                initTelePose);
     }
 
     @Override
     public void loop() {
-        telemetry.addLine("Press A to reset Yaw");
-        telemetry.addLine("Press left bumper to toggle drive mode");
-        telemetry.addLine("The left joystick sets the robot direction");
-        telemetry.addLine("Moving the right joystick left and right turns the robot");
+        telemetry.addLine("A: reset Yaw");
+        telemetry.addLine("Left Bumper: field-relative");
+        telemetry.addLine("Right Bumper: robot-relative");
 
         // If you press the A button, then you reset the Yaw to be zero from the way
         // the robot is currently pointing
@@ -140,62 +88,29 @@ public class fieldRelativeDriveAttempt extends OpMode {
             // imu.resetYaw();
 
             // call private method in this class
-            resetYaw(localizer);
+            resetYaw(myRobot.localizer);
         }
         // If you press the left bumper, set drive mode to FIELD_RELATIVE
         if (gamepad1.left_bumper) {
-            driveMode = DRIVE_MODE.FIELD_RELATIVE;
+            myRobot.driveMode = Bytes_Robot.DRIVE_MODE.FIELD_RELATIVE;
         }
 
         // If you press the right bumper, set drive mode to ROBOT_RELATIVE
         if (gamepad1.right_bumper) {
-            driveMode = DRIVE_MODE.ROBOT_RELATIVE;
-        }
-        // Intake controls
-        double intake = gamepad1.left_trigger;
-        if (intake > 0) {
-            intakeMotor.setPower(-1);
-        } else {
-            intakeMotor.setPower(0);
+            myRobot.driveMode = Bytes_Robot.DRIVE_MODE.ROBOT_RELATIVE;
         }
 
-        double outtake = gamepad1.right_trigger;
-        if (outtake > 0) {
-            intakeMotor.setPower(1);
-        } else {
-            intakeMotor.setPower(0);
-        }
-
-        // Outtake (flywheel) control
-        if (gamepad1.dpad_up) { //sets power for the far position
-            leftOuttakeMotor.setPower(1);
-            rightOuttakeMotor.setPower(1);
-        } else if (gamepad1.dpad_down) { //stops the motors
-            leftOuttakeMotor.setPower(0);
-            rightOuttakeMotor.setPower(0);
-        } else if (gamepad1.dpad_right) { //sets motor power for the close position
-            leftOuttakeMotor.setPower(0.5); //tune based on how powerful motor is
-            rightOuttakeMotor.setPower(0.5); //tune based on how powerful motor is
-        }
-
-        // Transfer servo control (brief push)
-        transferServo.setPosition(0);
-        while (gamepad1.x) {
-            transferServo.setPosition(0.5); // push up
-        }
-
-
-        telemetry.addData("Drive Mode: ", driveMode);
-        telemetry.addData("Current Heading: ", localizer.getPose().heading.toDouble());
+        telemetry.addData("Drive Mode: ", myRobot.driveMode);
+        telemetry.addData("Current Heading: ", Math.toDegrees(myRobot.localizer.getPose().heading.log()));
 
         telemetry.addData("drive Args(fwd):", -gamepad1.left_stick_y);
         telemetry.addData("drive Args(right):", gamepad1.left_stick_x);
         telemetry.addData("drive Args (rot):", gamepad1.right_stick_x);
 
-        if (driveMode == DRIVE_MODE.ROBOT_RELATIVE) {
-            drive(-gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x);
+        if (myRobot.driveMode == Bytes_Robot.DRIVE_MODE.ROBOT_RELATIVE) {
+            drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
         } else {
-            driveFieldRelative(-gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x);
+            driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
         }
         updatePoseEstimate();
         telemetry.update();
@@ -209,7 +124,7 @@ public class fieldRelativeDriveAttempt extends OpMode {
 
         // Second, rotate angle by the angle the robot is pointing
         theta = AngleUnit.normalizeRadians(theta -
-                localizer.getPose().heading.toDouble());
+                myRobot.localizer.getPose().heading.log());
         //  imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
 
         // Third, convert back to cartesian
@@ -244,10 +159,10 @@ public class fieldRelativeDriveAttempt extends OpMode {
         // We multiply by maxSpeed so that it can be set lower for outreaches
         // When a young child is driving the robot, we may not want to allow full
         // speed.
-        frontLeft.setPower(maxSpeed * (frontLeftPower / maxPower));
-        frontRight.setPower(maxSpeed * (frontRightPower / maxPower));
-        backLeft.setPower(maxSpeed * (backLeftPower / maxPower));
-        backRight.setPower(maxSpeed * (backRightPower / maxPower));
+        myRobot.frontLeft.setPower(maxSpeed * (frontLeftPower / maxPower));
+        myRobot.frontRight.setPower(maxSpeed * (frontRightPower / maxPower));
+        myRobot.backLeft.setPower(maxSpeed * (backLeftPower / maxPower));
+        myRobot.backRight.setPower(maxSpeed * (backRightPower / maxPower));
     }
 
     private void resetYaw(Localizer localizer) {
@@ -259,7 +174,7 @@ public class fieldRelativeDriveAttempt extends OpMode {
     }
 
     public PoseVelocity2d updatePoseEstimate() {
-        PoseVelocity2d vel = localizer.update();
+        PoseVelocity2d vel = myRobot.localizer.update();
 
         return vel;
     }
