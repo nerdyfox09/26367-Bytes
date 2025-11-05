@@ -19,8 +19,10 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 17)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(60, -15, Math.toRadians(0)))
-                .lineToX(30)
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(58, -13, Math.toRadians(30)))
+                .splineToLinearHeading(new Pose2d(36, -27, Math.toRadians(270)), Math.toRadians(180)) // pick up more balls
+                .strafeTo(new Vector2d(36,-38))
+                .splineToLinearHeading(new Pose2d(50, -15, Math.toRadians(35)), Math.toRadians(20)) // drive back to line
                 .build());
 
                 mm.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)

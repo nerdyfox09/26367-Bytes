@@ -20,7 +20,7 @@ public class BlueFarAuto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         myRobot = new Bytes_Robot(hardwareMap);
 
-        Pose2d beginPose = new Pose2d(50, -15, Math.toRadians(35));
+        Pose2d beginPose = new Pose2d(58, -13, Math.toRadians(30));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
 
@@ -30,14 +30,16 @@ public class BlueFarAuto extends LinearOpMode {
                 drive.actionBuilder(beginPose)
                         // Run outtake to shoot
                         .stopAndAdd(() -> {
-                            myRobot.leftOuttakeMotor.setVelocity(1150);
-                            myRobot.rightOuttakeMotor.setVelocity(1150);
+                            myRobot.leftOuttakeMotor.setVelocity(1050);
+                            myRobot.rightOuttakeMotor.setVelocity(1050);
                         })
 
                         .waitSeconds(1)
 
                         // Run intake to shoot
                         .stopAndAdd(() -> myRobot.intakeMotor.setPower(1.0))
+
+                        .waitSeconds(3)
 
                         // Stop Outtake
                         .stopAndAdd(() -> {
@@ -48,25 +50,29 @@ public class BlueFarAuto extends LinearOpMode {
                         // Stop intake
                         .stopAndAdd(() -> myRobot.intakeMotor.setPower(0.0))
 
-                        .splineToLinearHeading(new Pose2d(36, -30, Math.toRadians(90)), Math.toRadians(180)) // pick up more balls
+                        .splineToLinearHeading(new Pose2d(33, -30, Math.toRadians(270)), Math.toRadians(180)) // pick up more balls
 
                         // Run intake at new location
                         .stopAndAdd(() -> myRobot.intakeMotor.setPower(1.0))
 
-                        .strafeTo(new Vector2d(36,-38))
-                        .splineToLinearHeading(new Pose2d(50, -15, Math.toRadians(35)), Math.toRadians(20)) // drive back to line
+                        .strafeTo(new Vector2d(36,-48))
 
-                        // Stop intake now that balls are collected
+                        .waitSeconds(1)
+
                         .stopAndAdd(() -> myRobot.intakeMotor.setPower(0.0))
+
+                        .splineToLinearHeading(new Pose2d(58, -13, Math.toRadians(30)), Math.toRadians(20)) // drive back to line
 
                         // Spin up outtake flywheels
                         .stopAndAdd(() -> {
-                            myRobot.leftOuttakeMotor.setVelocity(1150);
-                            myRobot.rightOuttakeMotor.setVelocity(1150);
+                            myRobot.leftOuttakeMotor.setVelocity(1000);
+                            myRobot.rightOuttakeMotor.setVelocity(1000);
                         })
 
                         // Start intake to shoot
                         .stopAndAdd(() -> myRobot.intakeMotor.setPower(1.0))
+
+                        .waitSeconds(3)
 
                         // Stop outtake
                         .stopAndAdd(() -> {
