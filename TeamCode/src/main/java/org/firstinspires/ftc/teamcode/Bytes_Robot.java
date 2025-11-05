@@ -6,6 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.MecanumDrive;
+
+
 public class Bytes_Robot {
 
     // This declares the four motors needed
@@ -19,6 +22,7 @@ public class Bytes_Robot {
 
     // RoadRunner localizer for odometry
     public ThreeDeadWheelLocalizer localizer;
+    public MecanumDrive drive;
 
     public enum DRIVE_MODE {
         ROBOT_RELATIVE,

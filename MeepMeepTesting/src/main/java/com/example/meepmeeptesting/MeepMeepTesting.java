@@ -33,23 +33,7 @@ public class MeepMeepTesting {
                 //start intake
                 //stop outtake
                 //stop intake
-
-
-
-
-
-
-                // .splineTo(new Vector2d(-20, -16), Math.toRadians(125)) // drive out diagonally
-               // .turn(Math.toRadians(-80))
-
-             //   .lineToYLinearHeading(-36, 36) // approach first shooting pos
-              //  .splineToLinearHeading(new Pose2d(-24, 12, Math.toRadians(0)), Math.toRadians(0)) // shoot
-            //    .splineToLinearHeading(new Pose2d(-12, 24, Math.toRadians(0)), Math.toRadians(0)) // pickup first ball
-            //    .strafeTo(new Vector2d(12,12)) // move to second ball pickup
-           //     .splineToLinearHeading(new Pose2d(-24, 12, Math.toRadians(0)), Math.toRadians(0)) // return to shoot
-          //      .lineToY(12) // adjust position
-         //       .splineToLinearHeading(new Pose2d(0, 0, Math.toRadians(90)), Math.toRadians(90)) // middle for RP
-                        .build());
+                .build());
 
                 mm.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)
                 .setTheme(new ColorSchemeBlueDark())
