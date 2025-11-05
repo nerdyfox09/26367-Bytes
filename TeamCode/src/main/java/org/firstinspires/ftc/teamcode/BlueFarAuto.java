@@ -11,13 +11,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.tuning.TuningOpModes;
 
-@Autonomous
+@Autonomous(name = "Blue Far Auto")
 public class BlueFarAuto extends LinearOpMode {
 
     Bytes_Robot myRobot;
-
-
-
 
     @Override
     public void runOpMode() throws InterruptedException {
