@@ -20,28 +20,18 @@ public class MeepMeepTesting {
                 .build();
 
         myBot.runAction(
-                myBot.getDrive().actionBuilder(new Pose2d(58, 13, Math.toRadians(-30)))
-
-                        // Spin up outtake and shoot (simulated delay only in MeepMeep)
-                        .waitSeconds(1)
-
-                        // Drive to pick up more rings
-                        .splineToLinearHeading(new Pose2d(37, 30, Math.toRadians(90)), Math.toRadians(0))
-
-                        .strafeTo(new Vector2d(36, 48))
-
-                        .waitSeconds(1)
-
-                        // Drive back to shooting line
-                        .splineToLinearHeading(new Pose2d(58, 13, Math.toRadians(-50)), Math.toRadians(-20))
-
-                        .waitSeconds(3)
-
-                        // Park or back up
-                        .lineToX(30)
-
+                myBot.getDrive().actionBuilder(new Pose2d(-62, 36, Math.toRadians(0)))
+                        .splineToLinearHeading(new Pose2d(0, 0, Math.toRadians(315)), Math.toRadians(-20))
+                        .splineToLinearHeading(new Pose2d(-11, 30, Math.toRadians(270)), Math.toRadians(0))
+                        .strafeTo(new Vector2d(-11,52))
+                        .splineToLinearHeading(new Pose2d(0, 0, Math.toRadians(315)), Math.toRadians(45))
+                        .strafeTo(new Vector2d(20,0))
                         .build()
         );
+
+
+
+
 
 
         mm.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)
