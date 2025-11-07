@@ -30,8 +30,8 @@ public class BlueFarAuto extends LinearOpMode {
                 drive.actionBuilder(beginPose)
                         // Run outtake to shoot
                         .stopAndAdd(() -> {
-                            myRobot.leftOuttakeMotor.setVelocity(1050);
-                            myRobot.rightOuttakeMotor.setVelocity(1050);
+                            myRobot.leftOuttakeMotor.setVelocity(1000);
+                            myRobot.rightOuttakeMotor.setVelocity(1000);
                         })
 
                         .waitSeconds(1)

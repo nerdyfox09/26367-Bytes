@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients; // <-- Import this
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp(name = "Field Relative Drive")
@@ -15,6 +16,15 @@ public class FieldRelativeDrive extends OpMode {
     private DcMotorEx intakeMotor;
     private DcMotorEx leftOuttakeMotor;
     private DcMotorEx rightOuttakeMotor;
+
+    // --- (NEW) SET YOUR TUNED PIDF GAINS HERE ---
+    // Replace these values with the "magic numbers" you found
+    // during your tuning OpModes.
+    public static final double OUTTAKE_P = 20; // Your tuned P (likely high for stopping)
+    public static final double OUTTAKE_I = 0.0;  // Your tuned I (likely 0.0)
+    public static final double OUTTAKE_D = 25;  // Your tuned D (likely small, for damping)
+    public static final double OUTTAKE_F = 12.0; // Your tuned F (for holding speed)
+    // --- END NEW ---
 
     @Override
     public void init() {
@@ -45,7 +55,21 @@ public class FieldRelativeDrive extends OpMode {
         leftOuttakeMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightOuttakeMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
+        // --- (NEW) APPLY YOUR TUNED PIDF COEFFICIENTS ---
+        // 1. Create a PIDFCoefficients object with your tuned values
+        PIDFCoefficients outtakePIDF = new PIDFCoefficients(OUTTAKE_P, OUTTAKE_I, OUTTAKE_D, OUTTAKE_F);
+
+        // 2. Apply these coefficients to both motors
+        leftOuttakeMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, outtakePIDF);
+        rightOuttakeMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, outtakePIDF);
+
+        // Add telemetry to confirm
+        telemetry.addData("Outtake PIDF Set", "P:%.2f, I:%.2f, D:%.2f, F:%.2f",
+                OUTTAKE_P, OUTTAKE_I, OUTTAKE_D, OUTTAKE_F);
+        // --- END NEW ---
+
         myRobot.driveMode = Bytes_Robot.DRIVE_MODE.FIELD_RELATIVE;
+        telemetry.update(); // Show the PIDF message
     }
 
     @Override
@@ -82,23 +106,25 @@ public class FieldRelativeDrive extends OpMode {
         }
 
         // --- Outtake (flywheel) control ---
-        if (gamepad1.a) { // far shot
-            leftOuttakeMotor.setVelocity(1150);
-            rightOuttakeMotor.setVelocity(1150);
-        } else if (gamepad1.b) { // stop
+        if (gamepad1.a) { // HOLD for far shot
+            leftOuttakeMotor.setVelocity(1000);
+            rightOuttakeMotor.setVelocity(1000);
+        } else if (gamepad1.y) { // HOLD for close shot
+            leftOuttakeMotor.setVelocity(3); // This seems very slow, is it right?
+            rightOuttakeMotor.setVelocity(3);
+        } else { // Neither A nor Y is held, so STOP
+            // This will use your tuned P and D gains
+            // to stop quickly and smoothly!
             leftOuttakeMotor.setVelocity(0.0);
             rightOuttakeMotor.setVelocity(0.0);
-        } else if (gamepad1.y) { // close shot
-            leftOuttakeMotor.setVelocity(3);
-            rightOuttakeMotor.setVelocity(3);
         }
 
         // --- Telemetry ---
         telemetry.addData("Drive Mode", myRobot.driveMode);
         telemetry.addData("Heading (deg)", Math.toDegrees(myRobot.localizer.getPose().heading.log()));
         telemetry.addData("Intake Power", intakeMotor.getPower());
-        telemetry.addData("Outtake L/R", "%4.2f / %4.2f",
-                leftOuttakeMotor.getPower(), rightOuttakeMotor.getPower());
+        telemetry.addData("Outtake L/R Velocity", "%.1f / %.1f",
+                leftOuttakeMotor.getVelocity(), rightOuttakeMotor.getVelocity());
         telemetry.update();
     }
 
