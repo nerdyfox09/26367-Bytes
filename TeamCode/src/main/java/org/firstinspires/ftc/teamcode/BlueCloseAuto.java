@@ -43,7 +43,7 @@ public class BlueCloseAuto extends LinearOpMode {
                         .stopAndAdd(() -> myRobot.intakeMotor.setPower(1.0))
                         .strafeTo(new Vector2d(-11, -52))
                         .stopAndAdd(() -> myRobot.intakeMotor.setPower(0.0))
-                        .splineToLinearHeading(new Pose2d(-3, -5, Math.toRadians(45)), Math.toRadians(-45))
+                        .splineToLinearHeading(new Pose2d(-3, -53, Math.toRadians(45)), Math.toRadians(-45))
                         .stopAndAdd(() -> {
                             myRobot.leftOuttakeMotor.setVelocity(1000);
                             myRobot.rightOuttakeMotor.setVelocity(1000);
