@@ -20,7 +20,7 @@ public class BlueFarAuto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         myRobot = new Bytes_Robot(hardwareMap);
 
-        Pose2d beginPose = new Pose2d(58, -13, Math.toRadians(30));
+        Pose2d beginPose = new Pose2d(60, -20, Math.toRadians(0));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
 
@@ -28,6 +28,9 @@ public class BlueFarAuto extends LinearOpMode {
 
         Actions.runBlocking(
                 drive.actionBuilder(beginPose)
+
+                        .splineToLinearHeading(new Pose2d(55, -5, Math.toRadians(30)), Math.toRadians(0)) // pick up more balls
+
                         // Run outtake to shoot
                         .stopAndAdd(() -> {
                             myRobot.leftOuttakeMotor.setVelocity(1000);

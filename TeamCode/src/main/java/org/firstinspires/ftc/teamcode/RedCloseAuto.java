@@ -26,8 +26,8 @@ public class RedCloseAuto extends LinearOpMode {
                 drive.actionBuilder(beginPose)
                         .splineToLinearHeading(new Pose2d(-5, 5, Math.toRadians(315)), Math.toRadians(-20))
                         .stopAndAdd(() -> {
-                            myRobot.leftOuttakeMotor.setVelocity(1000);
-                            myRobot.rightOuttakeMotor.setVelocity(1000);
+                            myRobot.leftOuttakeMotor.setVelocity(900);
+                            myRobot.rightOuttakeMotor.setVelocity(900);
                         })
 
                         .waitSeconds(1)
@@ -53,8 +53,8 @@ public class RedCloseAuto extends LinearOpMode {
                         .stopAndAdd(() -> myRobot.intakeMotor.setPower(0.0))
                         .splineToLinearHeading(new Pose2d(-5, 5, Math.toRadians(315)), Math.toRadians(45))
                         .stopAndAdd(() -> {
-                            myRobot.leftOuttakeMotor.setVelocity(1000);
-                            myRobot.rightOuttakeMotor.setVelocity(1000);
+                            myRobot.leftOuttakeMotor.setVelocity(900);
+                            myRobot.rightOuttakeMotor.setVelocity(900);
                         })
 
                         .waitSeconds(1)

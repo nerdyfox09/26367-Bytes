@@ -16,7 +16,7 @@ public class RedFarAuto extends LinearOpMode {
         myRobot = new Bytes_Robot(hardwareMap);
 
         // Mirror across field centerline (y changes sign)
-        Pose2d beginPose = new Pose2d(58, 13, Math.toRadians(-30));
+        Pose2d beginPose = new Pose2d(65, 22, Math.toRadians(0));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
 
@@ -24,6 +24,8 @@ public class RedFarAuto extends LinearOpMode {
 
         Actions.runBlocking(
                 drive.actionBuilder(beginPose)
+
+                        .splineToLinearHeading(new Pose2d(60, 15, Math.toRadians(30)), Math.toRadians(0)) // pick up more balls
                         // Spin up outtake
                         .stopAndAdd(() -> {
                             myRobot.leftOuttakeMotor.setVelocity(1000);
