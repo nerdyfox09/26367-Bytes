@@ -9,7 +9,7 @@ import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 
-public class MeepMeepTesting {
+public class BlueFarMeepMeepTest {
 
     public static void main(String[] args) {
 
@@ -20,8 +20,8 @@ public class MeepMeepTesting {
                 .build();
 
         myBot.runAction(
-                myBot.getDrive().actionBuilder(new Pose2d(62, -14, Math.toRadians(0)))
-                        .splineToLinearHeading(new Pose2d(55, -5, Math.toRadians(25)), Math.toRadians(0))
+                myBot.getDrive().actionBuilder(new Pose2d(62, -16, Math.toRadians(0)))
+                        .splineToLinearHeading(new Pose2d(55, -5, Math.toRadians(30)), Math.toRadians(0))
                         .stopAndAdd(() -> { })   // outtake on
                         .waitSeconds(1)
                         .stopAndAdd(() -> { })   // intake on
@@ -36,7 +36,7 @@ public class MeepMeepTesting {
                         .waitSeconds(1)
                         .stopAndAdd(() -> { })   // intake off
 
-                        .splineToLinearHeading(new Pose2d(58, -13, Math.toRadians(25)), Math.toRadians(20))
+                        .splineToLinearHeading(new Pose2d(55, -5, Math.toRadians(30)), Math.toRadians(20))
                         .stopAndAdd(() -> { })   // outtake on
                         .stopAndAdd(() -> { })   // intake on
                         .waitSeconds(3)
