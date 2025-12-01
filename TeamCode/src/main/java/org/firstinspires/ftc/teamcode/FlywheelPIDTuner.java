@@ -59,7 +59,7 @@ public class FlywheelPIDTuner extends LinearOpMode {
 
         // --- HARDWARE MAPPING ---
         try {
-            myRobot = new Bytes_Robot(hardwareMap);
+            myRobot = new Bytes_Robot(hardwareMap, telemetry);
         } catch (Exception e) {
             telemetry.addData("Error", "Hardware class not found or init failed.");
             telemetry.addData("Message", e.getMessage());

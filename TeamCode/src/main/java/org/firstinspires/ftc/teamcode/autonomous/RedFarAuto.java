@@ -1,10 +1,14 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode.BYTES_GLOBAL_Storage;
+import org.firstinspires.ftc.teamcode.Bytes_Robot;
+import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @Autonomous(name = "Red Far Auto")
 public class RedFarAuto extends LinearOpMode {
@@ -13,7 +17,7 @@ public class RedFarAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        myRobot = new Bytes_Robot(hardwareMap);
+        myRobot = new Bytes_Robot(hardwareMap, telemetry);
 
         // Mirror across field centerline (y changes sign)
         Pose2d beginPose = new Pose2d(62, 14, Math.toRadians(0));

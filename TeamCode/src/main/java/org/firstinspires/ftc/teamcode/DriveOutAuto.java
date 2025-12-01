@@ -18,7 +18,7 @@ public class DriveOutAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        myRobot = new Bytes_Robot(hardwareMap);
+        myRobot = new Bytes_Robot(hardwareMap, telemetry);
 
         Pose2d beginPose = new Pose2d(60, -15,Math.toRadians(0));
 
