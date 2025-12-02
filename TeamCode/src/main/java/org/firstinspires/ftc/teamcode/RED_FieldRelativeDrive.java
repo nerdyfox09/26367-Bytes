@@ -96,12 +96,15 @@ public class RED_FieldRelativeDrive extends OpMode {
     public void loop() {
         this.packet = new TelemetryPacket();
 
-        telemetry.addLine("A: reset Yaw");
+        telemetry.addLine("Dpad Up: reset Yaw");
         telemetry.addLine("B: AIM short-range");
         telemetry.addLine("Y: AIM long-range");
-        telemetry.addLine("X: sight-scope");
+        telemetry.addLine("X: ");
+        telemetry.addLine("A: ");
         telemetry.addLine("Left Bumper: field-relative");
         telemetry.addLine("Right Bumper: robot-relative");
+        telemetry.addLine("Left Trigger: Reverse intake");
+        telemetry.addLine("Right Trigger: Intake");
 
         telemetry.addData("Time: ", System.currentTimeMillis()/1000);
 
@@ -175,14 +178,37 @@ public class RED_FieldRelativeDrive extends OpMode {
             telemetry.addData("Drive Mode: ", myRobot.driveMode);
             telemetry.addData("Current Heading: ", Math.toDegrees(myRobot.localizer.getPose().heading.log()));
 
-            telemetry.addData("drive Args(fwd):", -gamepad1.left_stick_y);
-            telemetry.addData("drive Args(right):", gamepad1.left_stick_x);
-            telemetry.addData("drive Args (rot):", gamepad1.right_stick_x);
+            telemetry.addData("drive Args(fwd):", -gamepad1.right_stick_y);
+            telemetry.addData("drive Args(right):", gamepad1.right_stick_x);
+            telemetry.addData("drive Args (rot):", gamepad1.left_stick_x);
 
             if (myRobot.driveMode == Bytes_Robot.DRIVE_MODE.ROBOT_RELATIVE) {
-                myRobot.drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+                myRobot.drive(-gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x);
             } else {
-                myRobot.driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+                myRobot.driveFieldRelative(-gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x);
+            }
+
+            // --- Intake control ---
+            if (gamepad1.left_trigger > 0) {
+                myRobot.intakeMotor.setPower(-1.0);
+            } else if (gamepad1.right_trigger > 0) {
+                myRobot.intakeMotor.setPower(1.0);
+            } else {
+                myRobot.intakeMotor.setPower(0.0);
+            }
+
+            // --- Outtake (flywheel) control ---
+            if (gamepad1.dpad_up) { // HOLD for far shot
+                myRobot.leftOuttakeMotor.setVelocity(1000);
+                myRobot.rightOuttakeMotor.setVelocity(1000);
+            } else if (gamepad1.dpad_down) { // HOLD for close shot
+                myRobot.leftOuttakeMotor.setVelocity(3); // This seems very slow, is it right?
+                myRobot.rightOuttakeMotor.setVelocity(3);
+            } else { // Neither A nor Y is held, so STOP
+                // This will use your tuned P and D gains
+                // to stop quickly and smoothly!
+                myRobot.leftOuttakeMotor.setVelocity(0.0);
+                myRobot.rightOuttakeMotor.setVelocity(0.0);
             }
 
             myRobot.updatePoseEstimate();
@@ -191,7 +217,6 @@ public class RED_FieldRelativeDrive extends OpMode {
         telemetry.update();
         dashboard.sendTelemetryPacket(this.packet);
     }
-
 
     private void autoAimToTarget(double targetRange,
                                  double targetBearing,

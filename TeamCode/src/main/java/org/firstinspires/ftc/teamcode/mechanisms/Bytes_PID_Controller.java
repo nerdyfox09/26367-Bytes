@@ -49,7 +49,8 @@ public class Bytes_PID_Controller {
 
         double newPower = 0;
 
-        packet.put("rawMeasurement", currentMeasurement);
+        packet.put("currentMeasurement", currentMeasurement);
+        packet.put("targetMeasurement", targetMeasurement);
 
         // filter currentMeasurement if requested to dampen noise from sensor
         if (useFilter) {
@@ -102,8 +103,8 @@ public class Bytes_PID_Controller {
             // update state variables
             this.prevError = currentError;
 
-            // calculate new power
-            newPower = pTerm + iTerm + dTerm;
+            // calculate new power -- we subtract dterm to use it as braking force against pterm
+            newPower = pTerm + iTerm - dTerm;
 
             packet.put("prekF-power", newPower);
 

@@ -57,7 +57,7 @@ public class Bytes_Robot {
 
     public Bytes_Robot(HardwareMap hardwareMap, Telemetry telemetry) {
 
-        // show the current FOXY_CONFIG mode
+        // show the current foY_CONFIG mode
         String strConfigMode = BYTES_CONFIG.MODE_DEBUG ? "DEBUG" : "COMPETITION";
         if (BYTES_CONFIG.MODE_DEBUG) {
             telemetry.addLine("********* WARNING *********");
@@ -75,6 +75,8 @@ public class Bytes_Robot {
         rightOuttakeMotor = hardwareMap.get(DcMotorEx.class, BYTES_CONFIG.HW_OUTTAKE_MOTORS_RIGHT);
 
         intakeMotor = hardwareMap.get(DcMotorEx.class, BYTES_CONFIG.HW_INTAKE_MOTORS_PRIMARY);
+
+        webSight = hardwareMap.get(Bytes_Camera.class, BYTES_CONFIG.HW_SENSORS_CAMERA_NAME);
 
         // set brake mode on for firm stopping behavior
         frontLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);

@@ -43,7 +43,7 @@ public class BYTES_CONFIG {
             "ftcDefaults", 4.0, 225, 822.317, 822.317, 319.495, 242.502 );
 
     // sensors - camera currently installed on robot
-    public static CameraSpecs ACTIVE_CAMERA = FOX_RAY_VISION;
+    public static CameraSpecs ACTIVE_CAMERA = WEB_SIGHT;
     public static double HW_SENSORS_CAMERA_MAX_DETECTION_PERSISTENCE = 200; // in milliSec - how long to allow stale TagDetection to be valid
 
     public static double PARAMS_DRIVETRAIN_IN_PER_TICK = 0.00198432166862; // deadwheel measurement with forwardPushTest
