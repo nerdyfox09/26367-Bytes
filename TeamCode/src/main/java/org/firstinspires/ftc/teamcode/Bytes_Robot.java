@@ -1,10 +1,11 @@
-
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -13,23 +14,22 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.Bytes_Camera;
 import org.firstinspires.ftc.teamcode.mechanisms.Bytes_PID_Controller;
 
-
 public class Bytes_Robot {
 
     // This declares the four motors needed
-    public DcMotorEx frontLeft;
-    public DcMotorEx frontRight;
-    public DcMotorEx backLeft;
-    public DcMotorEx backRight;
+    public DcMotor frontLeft;
+    public DcMotor frontRight;
+    public DcMotor backLeft;
+    public DcMotor backRight;
     public DcMotorEx intakeMotor;
-    public DcMotorEx rightOuttakeMotor;
+
     public DcMotorEx leftOuttakeMotor;
+    public DcMotorEx rightOuttakeMotor;
 
     // RoadRunner localizer for odometry
     public ThreeDeadWheelLocalizer localizer;
-    public MecanumDrive drive;
 
-    // Webcam
+    // webcam
     public CameraName webCamName;
     public Bytes_Camera webSight;
 
@@ -47,7 +47,7 @@ public class Bytes_Robot {
 
     public enum DRIVE_MODE {
         ROBOT_RELATIVE,
-        FIELD_RELATIVE
+        FIELD_RELATIVE;
     }
 
     public DRIVE_MODE driveMode = DRIVE_MODE.FIELD_RELATIVE;
@@ -180,4 +180,5 @@ public class Bytes_Robot {
 
         return vel;
     }
+
 }

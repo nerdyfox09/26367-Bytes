@@ -1,4 +1,3 @@
-
 /* Copyright (c) 2025 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -59,7 +58,7 @@ import java.util.Locale;
  *
  */
 @Config
-@TeleOp(name = "Bytes: RED Field Relative Drive", group = "Bytes")
+@TeleOp(name = "RED Field Relative Drive", group = "Bytes")
 public class RED_FieldRelativeDrive extends OpMode {
 
     Bytes_Robot myRobot;
@@ -218,33 +217,17 @@ public class RED_FieldRelativeDrive extends OpMode {
         if (activeTag != null) {
 
             // The reported bearing value is our current angular position relative to the tag
-            double currentBearing = desiredTag.ftcPose.bearing;
-
-            // Calculate the error: Current observed bearing minus the desired bearing
-            double bearingError = currentBearing - targetBearing;
-
-            // collect telemetry for graphing
-            this.packet.put("currentBearing", currentBearing);
-            this.packet.put("targetBearing", targetBearing);
-            this.packet.put("bearingError", bearingError);
+            double currentBearing = activeTag.ftcPose.bearing;
 
             // output telemetry to driver station
-            telemetry.addLine(String.format(Locale.US, "\n==== (ID %d) %s", desiredTag.id, desiredTag.metadata.name));
-            telemetry.addLine(String.format(Locale.US,"RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", desiredTag.ftcPose.range, desiredTag.ftcPose.bearing, desiredTag.ftcPose.elevation));
+            telemetry.addLine(String.format(Locale.US, "\n==== (ID %d) %s", activeTag.id, activeTag.metadata.name));
+            telemetry.addLine(String.format(Locale.US,"R/B %6.1f %6.1f  (inch, deg)", activeTag.ftcPose.range, activeTag.ftcPose.bearing));
 
             // PID to target bearing
             double turnPower = pidCtrlBearing.getNewPower(currentBearing, targetBearing, true, packet);
 
             // The reported range value is our current y position relative to the tag
-            double currentRange = desiredTag.ftcPose.range;
-
-            // Calculate the error: Current observed range minus the desired range
-            double rangeError = currentRange - targetRange;
-
-            // collect telemetry for graphing
-            this.packet.put("currentRange", currentRange);
-            this.packet.put("targetRange", targetRange);
-            this.packet.put("rangeError", rangeError);
+            double currentRange = activeTag.ftcPose.range;
 
             // PID to target range
             double drivePower = pidCtrlRange.getNewPower(currentRange, targetRange, true, packet);
@@ -256,6 +239,11 @@ public class RED_FieldRelativeDrive extends OpMode {
                 decayFactor = Math.max(0.0, 1.0-(timeElapsedSinceGoodTag/maxDetectionPersistence));
                 drivePower = drivePower * decayFactor;
                 turnPower = turnPower * decayFactor;
+
+                // telemetry
+                packet.put("decayFactor", decayFactor);
+                packet.put("drivePowerDecayed", drivePower);
+                packet.put("turnPowerDecayed", turnPower);
             }
 
             // update motor powers (we flip sign on turn power to turn against the error)
