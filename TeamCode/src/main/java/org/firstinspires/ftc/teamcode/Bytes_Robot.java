@@ -76,8 +76,6 @@ public class Bytes_Robot {
 
         intakeMotor = hardwareMap.get(DcMotorEx.class, BYTES_CONFIG.HW_INTAKE_MOTORS_PRIMARY);
 
-        webCamName = hardwareMap.get(CameraName.class, BYTES_CONFIG.HW_SENSORS_CAMERA_NAME);
-
         // set brake mode on for firm stopping behavior
         frontLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);

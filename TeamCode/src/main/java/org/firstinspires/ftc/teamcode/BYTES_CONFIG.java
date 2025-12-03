@@ -98,7 +98,7 @@ public class BYTES_CONFIG {
             // set kF to minimum power required to move chassis (start with RR kS value)
             // alpha tunes low-pass filter on measurements - high value is less smoothing, but faster response
             0.095, 0, 0.001, 0.044, 10, 1000, 1, 0.65);
-    public static double PARAMS_CTRL_AIM_LONG_TARGET_RANGE = 118.2; // inches
+    public static double PARAMS_CTRL_AIM_LONG_TARGET_RANGE = 100.2; // inches
 
     // controller - aim short - bearing
     public static PidConstants PARAMS_CTRL_AIM_SHORT_TURN = new PidConstants(
