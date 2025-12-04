@@ -70,7 +70,7 @@ public class Bytes_TunePidDrive extends OpMode {
     private AprilTagDetection desiredTag = null;
     private AprilTagDetection lastTag = null;
     private double lastTagTime = 0;
-    private static final int DESIRED_TAG_ID = BYTES_CONFIG.GAME_DECODE_TARGETS_RED_ID;  // ID 24 = red target aprilTag
+    private static final int DESIRED_TAG_ID = BYTES_CONFIG.GAME_DECODE_TARGETS_BLUE_ID;  // ID 24 = red target aprilTag
 
     private FtcDashboard dashboard = FtcDashboard.getInstance();
     private TelemetryPacket packet;
@@ -121,7 +121,7 @@ public class Bytes_TunePidDrive extends OpMode {
                     myRobot.pidCtrlLongTurn);
 
             // clean up aimShort in case we just finished that
-            myRobot.pidCtrlShortTurn.resetController();
+            myRobot.pidCtrlLongTurn.resetController();
 
         } else if (gamepad1.b) {
             // aim to target with SHORT controllers and targets
@@ -131,7 +131,7 @@ public class Bytes_TunePidDrive extends OpMode {
                     myRobot.pidCtrlShortTurn);
 
             // clean up aimLong in case we just finished that
-            myRobot.pidCtrlLongTurn.resetController();
+            myRobot.pidCtrlShortTurn.resetController();
 
         } else if (!gamepad1.y && !gamepad1.b) {
             // we must check aim buttons are no longer pressed to avoid interrupting them
@@ -196,8 +196,9 @@ public class Bytes_TunePidDrive extends OpMode {
             }
 
             // update motor powers (we flip sign on turn power to turn against the error)
+            // we flip sign on drive power because our shooter is mounted on the back of the bot
             // set turn power to zero so we focus on tuning RANGE only
-            myRobot.drive(drivePower, 0, 0);
+            myRobot.drive(-drivePower, 0, 0);
 
             myRobot.updatePoseEstimate();
         }

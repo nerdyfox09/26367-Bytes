@@ -173,7 +173,7 @@ public class Bytes_TunePidTurn extends OpMode {
         if (activeTag != null) {
 
             // The reported bearing value is our current angular position relative to the tag
-            double currentBearing = desiredTag.ftcPose.bearing;
+            double currentBearing = activeTag.ftcPose.bearing;
 
             // Calculate the error: Current observed bearing minus the desired bearing
             double bearingError = currentBearing - targetBearing;
@@ -184,8 +184,8 @@ public class Bytes_TunePidTurn extends OpMode {
             this.packet.put("bearingError", bearingError);
 
             // output telemetry to driver station
-            telemetry.addLine(String.format(Locale.US, "\n==== (ID %d) %s", desiredTag.id, desiredTag.metadata.name));
-            telemetry.addLine(String.format(Locale.US,"RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", desiredTag.ftcPose.range, desiredTag.ftcPose.bearing, desiredTag.ftcPose.elevation));
+            telemetry.addLine(String.format(Locale.US, "\n==== (ID %d) %s", activeTag.id, activeTag.metadata.name));
+            telemetry.addLine(String.format(Locale.US,"RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", activeTag.ftcPose.range, activeTag.ftcPose.bearing, activeTag.ftcPose.elevation));
 
             // PID to target bearing
             double turnPower = pidCtrlBearing.getNewPower(currentBearing, targetBearing, true, packet);
