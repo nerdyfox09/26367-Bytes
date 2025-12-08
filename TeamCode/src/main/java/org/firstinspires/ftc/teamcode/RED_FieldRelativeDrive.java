@@ -190,9 +190,9 @@ public class RED_FieldRelativeDrive extends OpMode {
 
             // --- Intake control ---
             if (gamepad1.left_trigger > 0) {
-                myRobot.intakeMotor.setPower(-1.0);
+                myRobot.intakeMotor.setPower(-BYTES_CONFIG.HW_INTAKE_MOTORS_SPEED);
             } else if (gamepad1.right_trigger > 0) {
-                myRobot.intakeMotor.setPower(1.0);
+                myRobot.intakeMotor.setPower(BYTES_CONFIG.HW_INTAKE_MOTORS_SPEED);
             } else {
                 myRobot.intakeMotor.setPower(0.0);
             }
