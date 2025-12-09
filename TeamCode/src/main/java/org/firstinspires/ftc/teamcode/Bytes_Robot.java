@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
@@ -22,7 +23,8 @@ public class Bytes_Robot {
     public DcMotor backLeft;
     public DcMotor backRight;
     public DcMotorEx intakeMotor;
-
+    public Servo leftTransferServo;
+    public Servo rightTransferServo;
     public DcMotorEx leftOuttakeMotor;
     public DcMotorEx rightOuttakeMotor;
 
@@ -75,6 +77,11 @@ public class Bytes_Robot {
         rightOuttakeMotor = hardwareMap.get(DcMotorEx.class, BYTES_CONFIG.HW_OUTTAKE_MOTORS_RIGHT);
 
         intakeMotor = hardwareMap.get(DcMotorEx.class, BYTES_CONFIG.HW_INTAKE_MOTORS_PRIMARY);
+
+        leftTransferServo = hardwareMap.get(Servo.class, BYTES_CONFIG.HW_TRANSFER_SERVOS_LEFT);
+        rightTransferServo = hardwareMap.get(Servo.class, BYTES_CONFIG.HW_TRANSFER_SERVOS_RIGHT);
+
+
 
         // set brake mode on for firm stopping behavior
         frontLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);

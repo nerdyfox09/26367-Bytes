@@ -34,6 +34,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.mechanisms.Bytes_PID_Controller;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -137,12 +138,16 @@ public class RED_FieldRelativeDrive extends OpMode {
         }
 
         if (gamepad1.x) {
-            desiredTag = null;
-            desiredTag = myRobot.webSight.getTagBySpecificId(DESIRED_TAG_ID);
-            if (desiredTag != null) {
-                telemetry.addLine(String.format(Locale.US, "RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", desiredTag.ftcPose.range, desiredTag.ftcPose.bearing, desiredTag.ftcPose.elevation));
-            }
+            myRobot.leftTransferServo.setDirection(Servo.Direction.FORWARD);
+            myRobot.rightTransferServo.setDirection(Servo.Direction.REVERSE);
 
+            myRobot.leftTransferServo.setPosition(.75);
+            myRobot.rightTransferServo.setPosition(.75);
+
+        }
+         else if (!gamepad1.x){
+            myRobot.leftTransferServo.setPosition(.5);
+            myRobot.rightTransferServo.setPosition(.5);
         }
 
         if (gamepad1.y){

@@ -26,6 +26,9 @@ public class BYTES_CONFIG {
     public static String HW_INTAKE_MOTORS_PRIMARY = "intakeMotor";
     public static double HW_INTAKE_MOTORS_SPEED = 0.5;
 
+    public static String HW_TRANSFER_SERVOS_RIGHT = "rightTransferServo";
+    public static String HW_TRANSFER_SERVOS_LEFT = "leftTransferServo";
+
     // outtake motors
     public static String HW_OUTTAKE_MOTORS_LEFT = "leftOuttakeMotor";
     public static String HW_OUTTAKE_MOTORS_RIGHT = "rightOuttakeMotor";
