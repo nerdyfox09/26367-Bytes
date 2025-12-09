@@ -277,7 +277,7 @@ public class RED_FieldRelativeDrive extends OpMode {
             }
 
             // update motor powers (we flip sign on turn power to turn against the error)
-            myRobot.drive(drivePower, 0, -turnPower);
+            myRobot.drive(-drivePower, 0, -turnPower);
 
             myRobot.updatePoseEstimate();
         }
