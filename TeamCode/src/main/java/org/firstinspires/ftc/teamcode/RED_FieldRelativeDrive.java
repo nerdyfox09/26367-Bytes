@@ -28,6 +28,8 @@
  */
 package org.firstinspires.ftc.teamcode;
 
+import android.os.SystemClock;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -122,35 +124,111 @@ public class RED_FieldRelativeDrive extends OpMode {
             telemetry.addLine("*** TAG NOT FOUND :( ***");
         }
 
-        // If you press the A button, then you reset the Yaw to be zero from the way
+        // ***************************************************************
+        // *****                                                    ******
+        // ***** SETTING UP GAMEPAD 1 - all functions work together ******
+        // *****      --has sequencing--                            ******
+        // ***************************************************************
+
+        // If you press any dpad button, then you reset the Yaw to be zero from the way
         // the robot is currently pointing
-        if (gamepad1.a) {
+        if (gamepad1.dpad_up) {
             myRobot.resetYaw(myRobot.localizer);
         }
-        // If you press the left bumper, set drive mode to FIELD_RELATIVE
-        if (gamepad1.left_bumper) {
+
+        if (gamepad1.dpad_down) {
+            myRobot.resetYaw(myRobot.localizer);
+        }
+
+        if (gamepad1.dpad_left) {
+            myRobot.resetYaw(myRobot.localizer);
+        }
+
+        if (gamepad1.dpad_right) {
+            myRobot.resetYaw(myRobot.localizer);
+        }
+
+        // If you press x, set drive mode to FIELD_RELATIVE
+        if (gamepad1.x) {
             myRobot.driveMode = Bytes_Robot.DRIVE_MODE.FIELD_RELATIVE;
         }
 
-        // If you press the right bumper, set drive mode to ROBOT_RELATIVE
-        if (gamepad1.right_bumper) {
+        // If you press b, set drive mode to ROBOT_RELATIVE
+        if (gamepad1.b) {
             myRobot.driveMode = Bytes_Robot.DRIVE_MODE.ROBOT_RELATIVE;
         }
 
-        if (gamepad1.x) {
+        //when the trigger is held down, the intake and transfer servos spin
+        if (gamepad1.right_trigger > 0) {
+
             myRobot.leftTransferServo.setDirection(Servo.Direction.FORWARD);
             myRobot.rightTransferServo.setDirection(Servo.Direction.REVERSE);
 
             myRobot.leftTransferServo.setPosition(.75);
             myRobot.rightTransferServo.setPosition(.75);
 
-        }
-         else if (!gamepad1.x){
-            myRobot.leftTransferServo.setPosition(.5);
-            myRobot.rightTransferServo.setPosition(.5);
+            myRobot.intakeMotor.setPower(BYTES_CONFIG.HW_INTAKE_MOTORS_SPEED);
+
         }
 
-        if (gamepad1.y){
+        //when the trigger is let go of, the intake and transfer servos stop
+         else if (gamepad1.right_trigger <= 0){
+            myRobot.leftTransferServo.setPosition(.5);
+            myRobot.rightTransferServo.setPosition(.5);
+
+            myRobot.intakeMotor.setPower(0);
+        }
+
+         //while the bumper is pressed, the
+        if (gamepad1.right_bumper) {
+            myRobot.leftTransferServo.setDirection(Servo.Direction.REVERSE);
+            myRobot.rightTransferServo.setDirection(Servo.Direction.FORWARD);
+
+            myRobot.leftTransferServo.setPosition(.75);
+            myRobot.rightTransferServo.setPosition(.75);
+
+            myRobot.intakeMotor.setPower(-BYTES_CONFIG.HW_INTAKE_MOTORS_SPEED);
+
+        }
+        else if (!gamepad1.right_bumper){
+            myRobot.leftTransferServo.setPosition(.5);
+            myRobot.rightTransferServo.setPosition(.5);
+
+            myRobot.intakeMotor.setPower(0);
+        }
+
+        //while the left trigger is held down, the outtake motors will spin up and the servos and
+        //intake will also spin up to shoot balls for a long distance
+        while (gamepad1.left_trigger > 0) {
+            myRobot.leftOuttakeMotor.setVelocity(BYTES_CONFIG.HW_OUTTAKE_MOTORS_LEFT_VELOCITY_LONG);
+            myRobot.rightOuttakeMotor.setVelocity(BYTES_CONFIG.HW_OUTTAKE_MOTORS_RIGHT_VELOCITY_LONG);
+
+            myRobot.leftTransferServo.setDirection(Servo.Direction.FORWARD);
+            myRobot.rightTransferServo.setDirection(Servo.Direction.REVERSE);
+
+            myRobot.leftTransferServo.setPosition(.75);
+            myRobot.rightTransferServo.setPosition(.75);
+
+            myRobot.intakeMotor.setPower(BYTES_CONFIG.HW_INTAKE_MOTORS_SPEED);
+        }
+
+        //while the left bumper is held down, the outtake motors will spin up and the servos and
+        //intake will also spin up to shoot balls for a short distance
+        while(gamepad1.left_bumper){
+            myRobot.leftOuttakeMotor.setVelocity(BYTES_CONFIG.HW_OUTTAKE_MOTORS_LEFT_VELOCITY_SHORT);
+            myRobot.rightOuttakeMotor.setVelocity(BYTES_CONFIG.HW_OUTTAKE_MOTORS_RIGHT_VELOCITY_SHORT);
+
+            myRobot.leftTransferServo.setDirection(Servo.Direction.FORWARD);
+            myRobot.rightTransferServo.setDirection(Servo.Direction.REVERSE);
+
+            myRobot.leftTransferServo.setPosition(.75);
+            myRobot.rightTransferServo.setPosition(.75);
+
+            myRobot.intakeMotor.setPower(BYTES_CONFIG.HW_INTAKE_MOTORS_SPEED);
+
+        }
+
+        if (gamepad1.a){
             // aim to target with LONG controllers and targets
             autoAimToTarget(BYTES_CONFIG.PARAMS_CTRL_AIM_LONG_TARGET_RANGE,
                     BYTES_CONFIG.PARAMS_CTRL_AIM_LONG_TARGET_BEARING,
@@ -161,7 +239,7 @@ public class RED_FieldRelativeDrive extends OpMode {
             myRobot.pidCtrlShortTurn.resetController();
             myRobot.pidCtrlShortDrive.resetController();
 
-        } else if (gamepad1.b){
+        } else if (gamepad1.y){
             // aim to target with SHORT controllers and targets
             autoAimToTarget(BYTES_CONFIG.PARAMS_CTRL_AIM_SHORT_TARGET_RANGE,
                     BYTES_CONFIG.PARAMS_CTRL_AIM_SHORT_TARGET_BEARING,
@@ -172,7 +250,7 @@ public class RED_FieldRelativeDrive extends OpMode {
             myRobot.pidCtrlLongTurn.resetController();
             myRobot.pidCtrlLongDrive.resetController();
 
-        } else if (!gamepad1.y && !gamepad1.b) {
+        } else if (!gamepad1.y && !gamepad1.a) {
             // no auto aim in progress, just drive with joystick
             // first we clean up all autoAim controllers
             myRobot.pidCtrlLongDrive.resetController();
@@ -193,27 +271,128 @@ public class RED_FieldRelativeDrive extends OpMode {
                 myRobot.driveFieldRelative(-gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x);
             }
 
-            // --- Intake control ---
-            if (gamepad1.left_trigger > 0) {
-                myRobot.intakeMotor.setPower(-BYTES_CONFIG.HW_INTAKE_MOTORS_SPEED);
-            } else if (gamepad1.right_trigger > 0) {
-                myRobot.intakeMotor.setPower(BYTES_CONFIG.HW_INTAKE_MOTORS_SPEED);
-            } else {
-                myRobot.intakeMotor.setPower(0.0);
-            }
+            myRobot.updatePoseEstimate();
+        }
 
-            // --- Outtake (flywheel) control ---
-            if (gamepad1.dpad_up) { // HOLD for far shot
-                myRobot.leftOuttakeMotor.setVelocity(1000);
-                myRobot.rightOuttakeMotor.setVelocity(1000);
-            } else if (gamepad1.dpad_down) { // HOLD for close shot
-                myRobot.leftOuttakeMotor.setVelocity(3); // This seems very slow, is it right?
-                myRobot.rightOuttakeMotor.setVelocity(3);
-            } else { // Neither A nor Y is held, so STOP
-                // This will use your tuned P and D gains
-                // to stop quickly and smoothly!
-                myRobot.leftOuttakeMotor.setVelocity(0.0);
-                myRobot.rightOuttakeMotor.setVelocity(0.0);
+        // *******************************************************************
+        // *****                                                        ******
+        // ***** SETTING UP GAMEPAD 2 - all functions run separately    ******
+        // *****                                                        ******
+        // *******************************************************************
+
+        // If you press dpad up or down, then you reset the Yaw to be zero from the way
+        // the robot is currently pointing
+        if (gamepad2.dpad_up) {
+            myRobot.resetYaw(myRobot.localizer);
+        }
+
+        if (gamepad2.dpad_down) {
+            myRobot.resetYaw(myRobot.localizer);
+        }
+
+        //if you press dpad left, then the drive mode goes to field relative
+        if (gamepad2.dpad_left) {
+            myRobot.driveMode = Bytes_Robot.DRIVE_MODE.FIELD_RELATIVE;        }
+
+        //if you press dpad right, then the drive mode goes to robot relative
+        if (gamepad2.dpad_right) {
+            myRobot.driveMode = Bytes_Robot.DRIVE_MODE.ROBOT_RELATIVE;        }
+
+        // If you press x, spin up the flywheels to a long shot velocity
+        if (gamepad2.x) {
+            myRobot.leftOuttakeMotor.setVelocity(BYTES_CONFIG.HW_OUTTAKE_MOTORS_LEFT_VELOCITY_LONG);
+            myRobot.rightOuttakeMotor.setVelocity(BYTES_CONFIG.HW_OUTTAKE_MOTORS_RIGHT_VELOCITY_LONG);
+        }
+
+        // If you press b, spin up the flywheels to a short shot velocity
+        else if (gamepad2.b) {
+            myRobot.leftOuttakeMotor.setVelocity(BYTES_CONFIG.HW_OUTTAKE_MOTORS_LEFT_VELOCITY_SHORT);
+            myRobot.rightOuttakeMotor.setVelocity(BYTES_CONFIG.HW_OUTTAKE_MOTORS_RIGHT_VELOCITY_SHORT);
+        }
+        else if (!gamepad1.x && !gamepad1.b) {
+            myRobot.leftOuttakeMotor.setVelocity(0);
+            myRobot.rightOuttakeMotor.setVelocity(0);
+        }
+
+        //when the right trigger is held down, the intake spins
+        if (gamepad2.right_trigger > 0) {
+            myRobot.intakeMotor.setPower(BYTES_CONFIG.HW_INTAKE_MOTORS_SPEED);
+        }
+
+        //when the trigger is let go of, the intake stops
+        else if (gamepad2.right_trigger <= 0){
+            myRobot.intakeMotor.setPower(0);
+        }
+
+        //while the right bumper is pressed, the intake spins backwards
+        if (gamepad2.right_bumper) {
+           myRobot.intakeMotor.setPower(-BYTES_CONFIG.HW_INTAKE_MOTORS_SPEED);
+
+        }
+        else if (!gamepad2.right_bumper){
+            myRobot.intakeMotor.setPower(0);
+        }
+
+        //while the left trigger is held down, the transfer servos will spin
+        while (gamepad2.left_trigger > 0) {
+            myRobot.leftTransferServo.setDirection(Servo.Direction.FORWARD);
+            myRobot.rightTransferServo.setDirection(Servo.Direction.REVERSE);
+
+            myRobot.leftTransferServo.setPosition(.75);
+            myRobot.rightTransferServo.setPosition(.75);
+        }
+
+        //while the left bumper is held down, the transfer servos will spin backwards
+        while(gamepad2.left_bumper){
+            myRobot.leftTransferServo.setDirection(Servo.Direction.REVERSE);
+            myRobot.rightTransferServo.setDirection(Servo.Direction.FORWARD);
+
+            myRobot.leftTransferServo.setPosition(.75);
+            myRobot.rightTransferServo.setPosition(.75);
+
+        }
+
+        if (gamepad1.a){
+            // aim to target with LONG controllers and targets
+            autoAimToTarget(BYTES_CONFIG.PARAMS_CTRL_AIM_LONG_TARGET_RANGE,
+                    BYTES_CONFIG.PARAMS_CTRL_AIM_LONG_TARGET_BEARING,
+                    myRobot.pidCtrlLongDrive,
+                    myRobot.pidCtrlLongTurn);
+
+            // clean up aimShort in case we just finished that
+            myRobot.pidCtrlShortTurn.resetController();
+            myRobot.pidCtrlShortDrive.resetController();
+
+        } else if (gamepad1.y){
+            // aim to target with SHORT controllers and targets
+            autoAimToTarget(BYTES_CONFIG.PARAMS_CTRL_AIM_SHORT_TARGET_RANGE,
+                    BYTES_CONFIG.PARAMS_CTRL_AIM_SHORT_TARGET_BEARING,
+                    myRobot.pidCtrlShortDrive,
+                    myRobot.pidCtrlShortTurn);
+
+            // clean up aimLong in case we just finished that
+            myRobot.pidCtrlLongTurn.resetController();
+            myRobot.pidCtrlLongDrive.resetController();
+
+        } else if (!gamepad1.y && !gamepad1.a) {
+            // no auto aim in progress, just drive with joystick
+            // first we clean up all autoAim controllers
+            myRobot.pidCtrlLongDrive.resetController();
+            myRobot.pidCtrlLongTurn.resetController();
+            myRobot.pidCtrlShortDrive.resetController();
+            myRobot.pidCtrlShortTurn.resetController();
+
+            telemetry.addData("Drive Mode: ", myRobot.driveMode);
+            telemetry.addData("Current Heading: ", Math.toDegrees(myRobot.localizer.getPose().heading.log()));
+
+            telemetry.addData("drive Args(fwd):", -gamepad1.right_stick_y);
+            telemetry.addData("drive Args(right):", gamepad1.right_stick_x);
+            telemetry.addData("drive Args (rot):", gamepad1.left_stick_x);
+
+            if (myRobot.driveMode == Bytes_Robot.DRIVE_MODE.ROBOT_RELATIVE) {
+                myRobot.drive(-gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x);
+            } else {
+                myRobot.driveFieldRelative(-gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x);
             }
 
             myRobot.updatePoseEstimate();

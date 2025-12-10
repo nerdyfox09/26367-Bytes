@@ -33,6 +33,15 @@ public class BYTES_CONFIG {
     public static String HW_OUTTAKE_MOTORS_LEFT = "leftOuttakeMotor";
     public static String HW_OUTTAKE_MOTORS_RIGHT = "rightOuttakeMotor";
 
+    public static double HW_OUTTAKE_MOTORS_LEFT_VELOCITY_SHORT = 750;
+
+    public static double HW_OUTTAKE_MOTORS_RIGHT_VELOCITY_SHORT = 750;
+
+    public static double HW_OUTTAKE_MOTORS_LEFT_VELOCITY_LONG = 950;
+
+    public static double HW_OUTTAKE_MOTORS_RIGHT_VELOCITY_LONG = 950;
+
+
     // sensors - gyro
     public static String HW_SENSORS_IMU_PRIMARY = "imu";
 
