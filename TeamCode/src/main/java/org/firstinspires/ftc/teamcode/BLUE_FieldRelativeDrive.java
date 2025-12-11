@@ -61,8 +61,8 @@ import java.util.Locale;
  *
  */
 @Config
-@TeleOp(name = "RED Field Relative Drive", group = "Bytes")
-public class RED_FieldRelativeDrive extends OpMode {
+@TeleOp(name = "BLUE Field Relative Drive", group = "Bytes")
+public class BLUE_FieldRelativeDrive extends OpMode {
 
     Bytes_Robot myRobot;
     private AprilTagProcessor aprilTag;
@@ -133,7 +133,7 @@ public class RED_FieldRelativeDrive extends OpMode {
         // *****      --has sequencing--                            ******
         // ***************************************************************
 
-        //if i'm pressing the right trigger, then run the intake sequence
+       //if i'm pressing the right trigger, then run the intake sequence
         if (gamepad1.right_trigger > 0) {
 
             myRobot.leftTransferServo.setDirection(Servo.Direction.FORWARD);

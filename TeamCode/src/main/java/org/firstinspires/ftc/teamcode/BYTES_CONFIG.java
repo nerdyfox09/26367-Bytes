@@ -37,9 +37,19 @@ public class BYTES_CONFIG {
 
     public static double HW_OUTTAKE_MOTORS_RIGHT_VELOCITY_SHORT = 750;
 
-    public static double HW_OUTTAKE_MOTORS_LEFT_VELOCITY_LONG = 950;
+    public static double HW_OUTTAKE_MOTORS_SHORT_LOWER_VELOCITY = 860;
+    public static double HW_OUTTAKE_MOTORS_SHORT_UPPER_VELOCITY = 890;
 
-    public static double HW_OUTTAKE_MOTORS_RIGHT_VELOCITY_LONG = 950;
+
+    // long shoot velocity: 875
+    // long range: 140in
+    // long bearing: 17.6 degrees
+    public static double HW_OUTTAKE_MOTORS_LEFT_VELOCITY_LONG = 875;
+
+    public static double HW_OUTTAKE_MOTORS_RIGHT_VELOCITY_LONG = 875;
+
+    public static double HW_OUTTAKE_MOTORS_LONG_LOWER_VELOCITY = 860;
+    public static double HW_OUTTAKE_MOTORS_LONG_UPPER_VELOCITY = 890;
 
 
     // sensors - gyro
@@ -102,7 +112,7 @@ public class BYTES_CONFIG {
             // set kF to minimum power required to turn chassis (start with RR kS value)
             // alpha tunes low-pass filter on measurements - low value is more smoothing, but slower response
             0.035, 0.00001, 0.0085, 0.033, 180, 216, 1, 0.95);
-    public static double PARAMS_CTRL_AIM_LONG_TARGET_BEARING = 1.2; // degrees
+    public static double PARAMS_CTRL_AIM_LONG_TARGET_BEARING = 17.6; // degrees
 
     // controller - aim long - range
     public static PidConstants PARAMS_CTRL_AIM_LONG_DRIVE = new PidConstants(
@@ -111,7 +121,7 @@ public class BYTES_CONFIG {
             // set kF to minimum power required to move chassis (start with RR kS value)
             // alpha tunes low-pass filter on measurements - high value is less smoothing, but faster response
             0.095, 0, 0.001, 0.044, 10, 1000, 1, 0.65);
-    public static double PARAMS_CTRL_AIM_LONG_TARGET_RANGE = 100.2; // inches
+    public static double PARAMS_CTRL_AIM_LONG_TARGET_RANGE = 140.2; // inches
 
     // controller - aim short - bearing
     public static PidConstants PARAMS_CTRL_AIM_SHORT_TURN = new PidConstants(
