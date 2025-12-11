@@ -74,7 +74,7 @@ public class RED_FieldRelativeDrive extends OpMode {
     boolean leftIsGood = false;
     boolean rightIsGood = false;
 
-    private static final int DESIRED_TAG_ID = BYTES_CONFIG.GAME_DECODE_TARGETS_BLUE_ID;  // ID 20 = blue target aprilTag
+    private static final int DESIRED_TAG_ID = BYTES_CONFIG.GAME_DECODE_TARGETS_RED_ID;  // ID 24 = red target aprilTag
 
     private FtcDashboard dashboard = FtcDashboard.getInstance();
     private TelemetryPacket packet;
