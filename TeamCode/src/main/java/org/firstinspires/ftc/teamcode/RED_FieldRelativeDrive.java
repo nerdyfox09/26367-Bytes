@@ -151,6 +151,11 @@ public class RED_FieldRelativeDrive extends OpMode {
             myRobot.leftOuttakeMotor.setVelocity(BYTES_CONFIG.HW_OUTTAKE_MOTORS_LEFT_VELOCITY_LONG);
             myRobot.rightOuttakeMotor.setVelocity(BYTES_CONFIG.HW_OUTTAKE_MOTORS_RIGHT_VELOCITY_LONG);
 
+            this.packet.put("right outtake target velocity", BYTES_CONFIG.HW_OUTTAKE_MOTORS_RIGHT_VELOCITY_LONG);
+            this.packet.put("left outtake target velocity", BYTES_CONFIG.HW_OUTTAKE_MOTORS_LEFT_VELOCITY_LONG);
+            this.packet.put("right outtake current velocity", myRobot.rightOuttakeMotor.getVelocity());
+            this.packet.put("left outtake current velocity", myRobot.leftOuttakeMotor.getVelocity());
+
             checkOuttakeMotorsLong();
 
             //if the left and right outtake motors are up to velocity OR if "x" on the gamepad
