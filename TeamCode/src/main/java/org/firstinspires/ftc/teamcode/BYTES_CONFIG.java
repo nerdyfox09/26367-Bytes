@@ -112,7 +112,7 @@ public class BYTES_CONFIG {
             // set kF to minimum power required to turn chassis (start with RR kS value)
             // alpha tunes low-pass filter on measurements - low value is more smoothing, but slower response
             0.03, 0, 0.0005, 0.09, 180, 200, 1, 0.8);
-    public static double PARAMS_CTRL_AIM_LONG_TARGET_BEARING = 14.6; // degrees
+    public static double PARAMS_CTRL_AIM_LONG_TARGET_BEARING = 12.2; // degrees
 
     // controller - aim long - range
     public static PidConstants PARAMS_CTRL_AIM_LONG_DRIVE = new PidConstants(
@@ -121,7 +121,7 @@ public class BYTES_CONFIG {
             // set kF to minimum power required to move chassis (start with RR kS value)
             // alpha tunes low-pass filter on measurements - high value is less smoothing, but faster response
             0.035, 0, 0.001, 0.087, 10, 200, 1, 0.65);
-    public static double PARAMS_CTRL_AIM_LONG_TARGET_RANGE = 141.2; // inches
+    public static double PARAMS_CTRL_AIM_LONG_TARGET_RANGE = 139.1; // inches
 
     // controller - aim short - bearing
     public static PidConstants PARAMS_CTRL_AIM_SHORT_TURN = new PidConstants(
@@ -130,7 +130,7 @@ public class BYTES_CONFIG {
             // set kF to minimum power required to turn chassis (start with RR kS value)
             // alpha tunes low-pass filter on measurements - low value is more smoothing, but slower response
             0.04, 0.00015, 0.0005, 0.033, 180, 216, 1, 0.65);
-    public static double PARAMS_CTRL_AIM_SHORT_TARGET_BEARING = 14.4; // degrees
+    public static double PARAMS_CTRL_AIM_SHORT_TARGET_BEARING = 13.9; // degrees
 
     // controller - aim short - range
     public static PidConstants PARAMS_CTRL_AIM_SHORT_DRIVE = new PidConstants(
@@ -139,7 +139,7 @@ public class BYTES_CONFIG {
             // set kF to minimum power required to move chassis (start with RR kS value)
             // alpha tunes low-pass filter on measurements - high value is less smoothing, but faster response
             0.06, 0, 0.0001, 0.00005, 10, 1000, 1, 0.8);
-    public static double PARAMS_CTRL_AIM_SHORT_TARGET_RANGE = 88.4; // inches
+    public static double PARAMS_CTRL_AIM_SHORT_TARGET_RANGE = 88.8; // inches
 
     // *******************************************************
     // *****                                            ******
