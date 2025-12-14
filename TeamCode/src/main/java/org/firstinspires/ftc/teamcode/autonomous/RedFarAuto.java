@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.BYTES_GLOBAL_Storage;
@@ -26,21 +27,26 @@ public class RedFarAuto extends LinearOpMode {
 
         waitForStart();
 
-        Actions.runBlocking(
+       Actions.runBlocking(
                 drive.actionBuilder(beginPose)
 
                         .splineToLinearHeading(new Pose2d(53, 4, Math.toRadians(-30)), Math.toRadians(0)) // pick up more balls
 
                         // Run outtake to shoot
                         .stopAndAdd(() -> {
-                            myRobot.leftOuttakeMotor.setVelocity(1000);
-                            myRobot.rightOuttakeMotor.setVelocity(1000);
+                            myRobot.leftOuttakeMotor.setVelocity(800);
+                            myRobot.rightOuttakeMotor.setVelocity(800);
                         })
 
                         .waitSeconds(1)
 
                         // Run intake to shoot
-                        .stopAndAdd(() -> myRobot.intakeMotor.setPower(1.0))
+                        .stopAndAdd(() -> {
+                            myRobot.intakeMotor.setPower(1);
+                            myRobot.rightTransferServo.setPosition(0.75);
+                            myRobot.leftTransferServo.setPosition(0.75);
+
+                        })
 
                         .waitSeconds(3)
 
@@ -51,31 +57,51 @@ public class RedFarAuto extends LinearOpMode {
                         })
 
                         // Stop intake
-                        .stopAndAdd(() -> myRobot.intakeMotor.setPower(0.0))
+                        .stopAndAdd(() -> {
+                            myRobot.intakeMotor.setPower(0);
+                            myRobot.rightTransferServo.setPosition(0.5);
+                            myRobot.leftTransferServo.setPosition(0.5);
+
+                        })
 
                         .splineToLinearHeading(new Pose2d(31, 17, Math.toRadians(90)), Math.toRadians(180)) // pick up more balls
 
                         // Run intake at new location
-                        .stopAndAdd(() -> myRobot.intakeMotor.setPower(1.0))
+                        .stopAndAdd(() -> {
+                            myRobot.intakeMotor.setPower(1);
+                            myRobot.rightTransferServo.setPosition(0.75);
+                            myRobot.leftTransferServo.setPosition(0.75);
+
+                        })
 
                         .strafeTo(new Vector2d(34,48))
 
                         .waitSeconds(1)
 
-                        .stopAndAdd(() -> myRobot.intakeMotor.setPower(0.0))
+                        .stopAndAdd(() -> {
+                            myRobot.intakeMotor.setPower(0);
+                            myRobot.rightTransferServo.setPosition(0.5);
+                            myRobot.leftTransferServo.setPosition(0.5);
+
+                        })
 
                         .splineToLinearHeading(new Pose2d(53, 4, Math.toRadians(-30)), Math.toRadians(20)) // drive back to line
 
                         // Spin up outtake flywheels
                         .stopAndAdd(() -> {
-                            myRobot.leftOuttakeMotor.setVelocity(1000);
-                            myRobot.rightOuttakeMotor.setVelocity(1000);
+                            myRobot.leftOuttakeMotor.setVelocity(800);
+                            myRobot.rightOuttakeMotor.setVelocity(800);
                         })
 
                         .waitSeconds(1)
 
                         // Start intake to shoot
-                        .stopAndAdd(() -> myRobot.intakeMotor.setPower(1.0))
+                        .stopAndAdd(() -> {
+                            myRobot.intakeMotor.setPower(1);
+                            myRobot.rightTransferServo.setPosition(0.75);
+                            myRobot.leftTransferServo.setPosition(0.75);
+
+                        })
 
                         .waitSeconds(2)
 
@@ -86,7 +112,12 @@ public class RedFarAuto extends LinearOpMode {
                         })
 
                         // Stop intake
-                        .stopAndAdd(() -> myRobot.intakeMotor.setPower(0.0))
+                        .stopAndAdd(() -> {
+                            myRobot.intakeMotor.setPower(0);
+                            myRobot.rightTransferServo.setPosition(0.5);
+                            myRobot.leftTransferServo.setPosition(0.5);
+
+                        })
 
                         .lineToX(30)
 

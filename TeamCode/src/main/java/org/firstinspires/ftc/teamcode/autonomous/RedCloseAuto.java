@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.BYTES_GLOBAL_Storage;
@@ -30,14 +31,19 @@ public class RedCloseAuto extends LinearOpMode {
                 drive.actionBuilder(beginPose)
                         .splineToLinearHeading(new Pose2d(-5, 5, Math.toRadians(315)), Math.toRadians(-20))
                         .stopAndAdd(() -> {
-                            myRobot.leftOuttakeMotor.setVelocity(900);
-                            myRobot.rightOuttakeMotor.setVelocity(900);
+                            myRobot.leftOuttakeMotor.setVelocity(750);
+                            myRobot.rightOuttakeMotor.setVelocity(750);
                         })
 
                         .waitSeconds(1)
 
                         // Run intake to shoot
-                        .stopAndAdd(() -> myRobot.intakeMotor.setPower(1.0))
+                        .stopAndAdd(() -> {
+                            myRobot.intakeMotor.setPower(1);
+                            myRobot.rightTransferServo.setPosition(0.75);
+                            myRobot.leftTransferServo.setPosition(0.75);
+
+                        })
 
                         .waitSeconds(3)
 
@@ -48,23 +54,43 @@ public class RedCloseAuto extends LinearOpMode {
                         })
 
                         // Stop intake
-                        .stopAndAdd(() -> myRobot.intakeMotor.setPower(0.0))
+                        .stopAndAdd(() -> {
+                            myRobot.intakeMotor.setPower(0);
+                            myRobot.rightTransferServo.setPosition(0.5);
+                            myRobot.leftTransferServo.setPosition(0.5);
+
+                        })
                         .splineToLinearHeading(new Pose2d(-11, 30, Math.toRadians(90)), Math.toRadians(0))
                         // Run intake to shoot
-                        .stopAndAdd(() -> myRobot.intakeMotor.setPower(1.0))
+                        .stopAndAdd(() -> {
+                            myRobot.intakeMotor.setPower(1);
+                            myRobot.rightTransferServo.setPosition(0.75);
+                            myRobot.leftTransferServo.setPosition(0.75);
+
+                        })
 
                         .strafeTo(new Vector2d(-11, 52))
-                        .stopAndAdd(() -> myRobot.intakeMotor.setPower(0.0))
+                        .stopAndAdd(() -> {
+                            myRobot.intakeMotor.setPower(0);
+                            myRobot.rightTransferServo.setPosition(0.5);
+                            myRobot.leftTransferServo.setPosition(0.5);
+
+                        })
                         .splineToLinearHeading(new Pose2d(-5, 5, Math.toRadians(315)), Math.toRadians(45))
                         .stopAndAdd(() -> {
-                            myRobot.leftOuttakeMotor.setVelocity(900);
-                            myRobot.rightOuttakeMotor.setVelocity(900);
+                            myRobot.leftOuttakeMotor.setVelocity(750);
+                            myRobot.rightOuttakeMotor.setVelocity(750);
                         })
 
                         .waitSeconds(1)
 
                         // Run intake to shoot
-                        .stopAndAdd(() -> myRobot.intakeMotor.setPower(1.0))
+                        .stopAndAdd(() -> {
+                            myRobot.intakeMotor.setPower(1);
+                            myRobot.rightTransferServo.setPosition(0.75);
+                            myRobot.leftTransferServo.setPosition(0.75);
+
+                        })
 
                         .waitSeconds(3)
 
@@ -72,6 +98,12 @@ public class RedCloseAuto extends LinearOpMode {
                         .stopAndAdd(() -> {
                             myRobot.leftOuttakeMotor.setVelocity(0.0);
                             myRobot.rightOuttakeMotor.setVelocity(0.0);
+
+                                myRobot.intakeMotor.setPower(0);
+                                myRobot.rightTransferServo.setPosition(0.5);
+                                myRobot.leftTransferServo.setPosition(0.5);
+
+
                         })
                         .strafeTo(new Vector2d(20, 0))
                         .build()
